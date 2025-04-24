@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Glemmen Chatbot</title>
+<style>
+
+   :root {
+
+     --blue: #007bff;
+
+     --light-blue: #e3f2fd;
+
+     --green: #28a745;
+
+     --red: #dc3545;
+
+     --gray: #f8f9fa;
+
+     --dark: #343a40;
+
+   }
+
+   * {
+
+     box-sizing: border-box;
+
+   }
+
+   body {
+
+     font-family: 'Segoe UI', sans-serif;
+
+     background: var(--gray);
+
+     margin: 0;
+
+     padding: 0;
+
+     display: flex;
+
+     flex-direction: column;
+
+     align-items: center;
+
+   }
+
+   header {
+
+     width: 100%;
+
+     max-width: 1000px;
+
+     text-align: center;
+
+     background-color: white;
+
+     padding: 30px 20px;
+
+     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+     border-radius: 0 0 12px 12px;
+
+   }
+
+   header h1 {
+
+     font-size: 36px;
+
+     color: var(--blue);
+
+     margin: 0;
+
+     font-weight: bold;
+
+   }
+
+   header p {
+
+     font-size: 18px;
+
+     color: #555;
+
+     margin-top: 8px;
+
+   }
+
+   .main-container {
+
+     display: flex;
+
+     justify-content: center;
+
+     gap: 20px;
+
+     padding: 20px;
+
+     max-width: 1200px;
+
+     width: 100%;
+
+   }
+
+   .ads-side {
+
+     display: flex;
+
+     flex-direction: column;
+
+     gap: 15px;
+
+     width: 200px;
+
+   }
+
+   .ad {
+
+     background: white;
+
+     padding: 15px;
+
+     border-radius: 12px;
+
+     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+     text-align: center;
+
+     text-decoration: none;
+
+     color: inherit;
+
+     transition: 0.2s;
+
+   }
+
+   .ad:hover {
+
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+     transform: scale(1.02);
+
+   }
+
+   .ad h3 {
+
+     font-size: 16px;
+
+     margin-bottom: 5px;
+
+     color: var(--dark);
+
+   }
+
+   .ad p {
+
+     font-size: 14px;
+
+     color: #666;
+
+   }
+
+   #chat-container {
+
+     background: white;
+
+     width: 100%;
+
+     max-width: 600px;
+
+     border-radius: 12px;
+
+     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+
+     padding: 20px;
+
+     box-sizing: border-box;
+
+   }
+
+   #chat {
+
+     display: flex;
+
+     flex-direction: column;
+
+     height: 350px;
+
+     overflow-y: auto;
+
+     border: 1px solid #ddd;
+
+     border-radius: 10px;
+
+     padding: 15px;
+
+     margin-bottom: 15px;
+
+     background-color: #fafafa;
+
+   }
+
+   .bot, .user {
+
+     max-width: 75%;
+
+     padding: 12px 16px;
+
+     border-radius: 18px;
+
+     font-size: 15px;
+
+     line-height: 1.4;
+
+     margin: 8px 0;
+
+     display: inline-block;
+
+     word-wrap: break-word;
+
+   }
+
+   .bot {
+
+     background-color: var(--light-blue);
+
+     color: #000;
+
+     align-self: flex-start;
+
+     border-bottom-left-radius: 0;
+
+   }
+
+   .user {
+
+     background-color: var(--blue);
+
+     color: white;
+
+     align-self: flex-end;
+
+     border-bottom-right-radius: 0;
+
+   }
+
+   #buttons {
+
+     display: flex;
+
+     flex-wrap: wrap;
+
+     gap: 10px;
+
+     justify-content: center;
+
+   }
+
+   button {
+
+     padding: 10px 18px;
+
+     font-size: 14px;
+
+     border: none;
+
+     border-radius: 8px;
+
+     cursor: pointer;
+
+     transition: 0.2s ease;
+
+   }
+
+   .yes { background: var(--green); color: white; }
+
+   .no { background: var(--red); color: white; }
+
+   .option { background: var(--blue); color: white; }
+
+   button:hover {
+
+     filter: brightness(1.1);
+
+   }
+
+   .ads-bottom {
+
+     display: flex;
+
+     gap: 15px;
+
+     margin: 20px auto;
+
+     justify-content: center;
+
+     flex-wrap: wrap;
+
+     max-width: 1000px;
+
+   }
+
+   .mom-ad {
+
+     position: fixed;
+
+     right: 0;
+
+     top: 100px;
+
+     width: 300px;
+
+     background: white;
+
+     padding: 20px;
+
+     border-radius: 12px 0 0 12px;
+
+     box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+
+     text-align: center;
+
+     z-index: 1000;
+
+   }
+
+   .mom-ad h3 {
+
+     font-size: 18px;
+
+     margin-bottom: 10px;
+
+     color: #d63384;
+
+   }
+
+   .mom-ad img {
+
+     width: 100%;
+
+     height: auto;
+
+     border-radius: 12px;
+
+     margin-top: 10px;
+
+   }
+
+   .close-btn {
+
+     position: absolute;
+
+     top: 8px;
+
+     right: 12px;
+
+     font-size: 20px;
+
+     cursor: pointer;
+
+     color: #888;
+
+   }
+
+   .close-btn:hover {
+
+     color: #333;
+
+   }
+
+   @media (max-width: 900px) {
+
+     .main-container {
+
+       flex-direction: column;
+
+       align-items: center;
+
+     }
+
+     .ads-side {
+
+       flex-direction: row;
+
+       justify-content: center;
+
+       flex-wrap: wrap;
+
+       width: 100%;
+
+     }
+
+     .mom-ad {
+
+       position: static;
+
+       width: 100%;
+
+       border-radius: 12px;
+
+       margin-top: 20px;
+
+     }
+
+   }
+</style>
+</head>
+<body>
+<header>
+<h1>Velkommen til Glemmen IT-Hjelp Chatbot 💬</h1>
+<p>Få hjelp med Internett, Visma, og pålogging – raskt og enkelt!</p>
+</header>
+<div class="main-container">
+<div class="ads-side">
+<a class="ad" href="#"><h3>💻 Skole-PC tilbud</h3><p>Få rabatter hos Lenovo – kun for elever!</p></a>
+<a class="ad" href="#"><h3>🎓 Gratis Visma-kurs</h3><p>Lær å bruke Visma effektivt.</p></a>
+</div>
+<div id="chat-container">
+<div id="chat"></div>
+<div id="buttons"></div>
+</div>
+<div class="ads-side">
+<a class="ad" href="#"><h3>📡 Bedre WiFi hjemme</h3><p>Få god dekning med WiFi-extender.</p></a>
+<a class="ad" href="#"><h3>🚚 Rask levering</h3><p>Levering på skolen med Bring.</p></a>
+</div>
+</div>
+<div class="ads-bottom">
+<a class="ad" href="#"><h3>🔐 Feide-innlogging</h3><p>Glemt passord? Gå til Feide.no</p></a>
+<a class="ad" href="#"><h3>🏫 Glemmen VGS</h3><p>Besøk skolens hjemmeside.</p></a>
+</div>
+ 
+<!-- Oppdatert single mødre-annonse -->
+<div class="mom-ad" id="momAd">
+<span class="close-btn" onclick="hideMomAd()">×</span>
+<h3><a href="https://www.topp5datingsider.com/goto/aWQ9NjA1NTQmdHM9MTc0NTUwMTU3MiZwb3M9MiZjb3Q9MzcmcnNyYz1ib29zdHJhbmtfZnJyJnBzaD01NTNhNTgzMjljMTgzYjA3OGY3ZTgxNDUyOGE3MjE1ZiZwdmlkPXB2LjY4MGEzZDgzMzdlYjcyLjAyMTMwOTIxJmFkYj1udWxsJnBjbnQ9MTImdGVtcGxhdGU9ZHluYW1pY190ZW1wbGF0ZSZob3N0X2lkPTIyJnNlYV9scF9jYXRlZ29yeT1kZWZhdWx0JnNlYV9scF9jYXRlZ29yeV9pZD00NSZzZWFfbHBfdHJhZmZpY19zb3VyY2U9YmluZyZzZWFfbHBfdHJhZmZpY19zb3VyY2VfaWQ9MTAmcmFua2luZ19jYXRlZ29yeT1kZWZhdWx0JnJhbmtpbmdfY2F0ZWdvcnlfaWQ9NDUmcmFua2luZ190cmFmZmljX3NvdXJjZT1iaW5nJnJhbmtpbmdfdHJhZmZpY19zb3VyY2VfaWQ9MTA=?page_referer_url=www.topp5datingsider.com/" target="_blank" style="color: #d63384; text-decoration: none;">Møt single mødre i nærheten</a></h3>
+<button onclick="nextMom()">Neste mamma</button>
+<a href="https://www.topp5datingsider.com/goto/aWQ9NjA1NTQmdHM9MTc0NTUwMTU3MiZwb3M9MiZjb3Q9MzcmcnNyYz1ib29zdHJhbmtfZnJyJnBzaD01NTNhNTgzMjljMTgzYjA3OGY3ZTgxNDUyOGE3MjE1ZiZwdmlkPXB2LjY4MGEzZDgzMzdlYjcyLjAyMTMwOTIxJmFkYj1udWxsJnBjbnQ9MTImdGVtcGxhdGU9ZHluYW1pY190ZW1wbGF0ZSZob3N0X2lkPTIyJnNlYV9scF9jYXRlZ29yeT1kZWZhdWx0JnNlYV9scF9jYXRlZ29yeV9pZD00NSZzZWFfbHBfdHJhZmZpY19zb3VyY2U9YmluZyZzZWFfbHBfdHJhZmZpY19zb3VyY2VfaWQ9MTAmcmFua2luZ19jYXRlZ29yeT1kZWZhdWx0JnJhbmtpbmdfY2F0ZWdvcnlfaWQ9NDUmcmFua2luZ190cmFmZmljX3NvdXJjZT1iaW5nJnJhbmtpbmdfdHJhZmZpY19zb3VyY2VfaWQ9MTA=?page_referer_url=www.topp5datingsider.com/" target="_blank">
+<img id="momImage" src="Bilde/a.jpg" alt="Single mamma">
+</a>
+</div>
+ 
+<script>
+
+   const momImages = ["Bilde/a.jpg", "Bilde/b.jpg", "Bilde/c.jpg"];
+
+   let momIndex = 0;
+ 
+   function nextMom() {
+
+     momIndex = (momIndex + 1) % momImages.length;
+
+     document.getElementById('momImage').src = momImages[momIndex];
+
+   }
+ 
+   setInterval(nextMom, 5000);
+ 
+   function hideMomAd() {
+
+     const ad = document.getElementById('momAd');
+
+     ad.style.display = 'none';
+
+     setTimeout(() => {
+
+       ad.style.display = 'block';
+
+     }, 15000);
+
+   }
+ 
+   // CHATBOT
+
+   const chat = document.getElementById('chat');
+
+   const buttons = document.getElementById('buttons');
+
+   let state = 'choose';
+
+   let step = 0;
+
+   let flow = [];
+
+   const flows = {
+
+     internett: [
+
+       { q: "Bruker du Ethernet?", yes: 1, no: 7 },
+
+       { q: "Kabel tilkoblet?", yes: 2, no: 3 },
+
+       { q: "Start PC på nytt. Fungerer internett?", yes: 'done', no: 4 },
+
+       { q: "Koble til Ethernet-kabel. Fungerer internett?", yes: 'done', no: 5 },
+
+       { q: "Test ny Ethernet-kabel. Fungerer internett?", yes: 'done', no: 6 },
+
+       { q: "Start PC på nytt. Fungerer internett?", yes: 'done', no: 8 },
+
+       { q: "Kontakt IT.", yes: null, no: null },
+
+       { q: "Kan du koble til WiFi?", yes: 9, no: 8 },
+
+       { q: "Kontakt IT.", yes: null, no: null },
+
+       { q: "Fungerer internett?", yes: 'done', no: 8 }
+
+     ],
+
+     visma: [
+
+       { q: "Har du logget inn og ut?", yes: 1, no: 1 },
+
+       { q: "Funker det?", yes: 'done', no: 2 },
+
+       { q: "Installer Visma på nytt. Funker det?", yes: 'done', no: 3 },
+
+       { q: "Reset passord. Funker det?", yes: 'done', no: 4 },
+
+       { q: "Kontakt IT.", yes: null, no: null }
+
+     ],
+
+     innlogging: [
+
+       { q: "Skriv brukernavn og passord", yes: 1, no: 1 },
+
+       { q: "Skriv passord", yes: 2, no: 2 },
+
+       { q: "Husk meg?", yes: 3, no: 4 },
+
+       { q: "Velg alternativ: Husk meg. Fikk du tilgang?", yes: 'done', no: 5 },
+
+       { q: "Fortsett uten å huske meg. Riktige detaljer?", yes: 6, no: 7 },
+
+       { q: "Feil passord. Tilbakestill passordet. Funker det?", yes: 'done', no: 8 },
+
+       { q: "Logg inn. Funker det?", yes: 'done', no: 8 },
+
+       { q: "Ingen tilgang. Kontakt IT.", yes: null, no: null },
+
+       { q: "Tilbakestill passord igjen. Funker det?", yes: 'done', no: 7 }
+
+     ]
+
+   };
+ 
+   function showMessage(msg, sender = 'bot') {
+
+     const div = document.createElement('div');
+
+     div.className = sender;
+
+     div.innerText = msg;
+
+     chat.appendChild(div);
+
+     chat.scrollTop = chat.scrollHeight;
+
+   }
+ 
+   function showOptions() {
+
+     showMessage("Hva trenger du hjelp med?");
+
+     buttons.innerHTML = '';
+
+     ['Internett', 'Visma', 'Innlogging'].forEach(option => {
+
+       const btn = document.createElement('button');
+
+       btn.className = 'option';
+
+       btn.innerText = option;
+
+       btn.onclick = () => chooseFlow(option.toLowerCase());
+
+       buttons.appendChild(btn);
+
+     });
+
+   }
+ 
+   function chooseFlow(name) {
+
+     flow = flows[name];
+
+     state = 'flow';
+
+     step = 0;
+
+     showStep();
+
+   }
+ 
+   function showStep() {
+
+     buttons.innerHTML = '';
+
+     const current = flow[step];
+
+     if (!current) return;
+
+     if (current.q.includes("Kontakt IT") || current.q.includes("Problem løst")) {
+
+       showMessage(current.q);
+
+       return;
+
+     }
+
+     showMessage(current.q);
+
+     const yesBtn = document.createElement('button');
+
+     yesBtn.innerText = 'Ja';
+
+     yesBtn.className = 'yes';
+
+     yesBtn.onclick = () => nextStep('yes');
+
+     buttons.appendChild(yesBtn);
+
+     const noBtn = document.createElement('button');
+
+     noBtn.innerText = 'Nei';
+
+     noBtn.className = 'no';
+
+     noBtn.onclick = () => nextStep('no');
+
+     buttons.appendChild(noBtn);
+
+   }
+ 
+   function nextStep(answer) {
+
+     showMessage(answer === 'yes' ? 'Ja' : 'Nei', 'user');
+
+     const next = flow[step][answer];
+
+     if (next === 'done') {
+
+       showMessage("Problem løst!");
+
+       buttons.innerHTML = '';
+
+     } else if (next === null) {
+
+       showMessage("Kontakt IT.");
+
+       buttons.innerHTML = '';
+
+     } else {
+
+       step = next;
+
+       setTimeout(showStep, 500);
+
+     }
+
+   }
+ 
+   showOptions();
+</script>
+</body>
+</html>
+ 
